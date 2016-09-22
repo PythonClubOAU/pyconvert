@@ -1,11 +1,11 @@
 """
-Base PyConvert class.
+Base class.
 Contains all measurements and their likely conversions, all files and their likely extensions and
 """
-import dbm
 
+__all__ = []
 
-__all__ = dict(measurement=dict(
+conversion_dict = dict(measurement=dict(
     length=dict(standard_unit="m", standard_symbol="m", available_converts=["metres",
                                                                             "centimeter", "millimeter",
                                                                             "decimeter", "kilometer",
@@ -43,59 +43,10 @@ __all__ = dict(measurement=dict(
                                                                                       "Farheint"],
                      available_units=["K", "C", "F"],
                      converts_and_units={"Kelvin": "K", "Celsius": "C", "Farheint": "F"})),
-    files=dict(file_type=["text", "audio", "image"], conversion=dict(
-        text=["csv, xlsx, txt, docx, word, pdf, epub"], audio=["mp3", "wav"], image=["jpg", "png", "jpeg"])))
+    files=dict(file_type=["text", "audio", "image", "video"],
+               base_symbols=dict(text=["csv, xlsx, txt, docx, word, pdf, epub"], audio=["mp3", "wav"],
+                                 image=["jpg", "png", "jpeg"]),
+               not_suppported=["py", "java", "lua", "cpp", "json", "xml", "php", "js", "html", "css"]))
 
 
-# @Todo: Save the master data into dbm
-"""
-The code below is not working yet.
-
-"""
-
-###################################################
-
-# with dbm.open("pyconvert",  "c") as db:
-#     for key, value in __all__.items():
-#         db[(key)] = bytes(value)
-
-###################################################
-
-
-class Validator:
-    def __init__(self, name):
-        self.name = name
-
-    def is_type_valid(self):
-        if not isinstance(self, str):
-            raise TypeError("The name {0} is not of type str. All unit entered must be strings".format(self))
-        else:
-            return True
-
-    def is_name_valid(value, self="measurement"):
-        if value in __all__[self].keys():
-            return True
-        elif value not in __all__[self]:
-            for key, values in __all__[self].items():
-                    # @Todo: Try to standardize this part
-                    """
-                    The code below is wrong.
-                    Its for testing purposes only.
-                    """
-                    if value in values["available_units"]:
-                        return False
-                    else:
-                        return True
-        else:
-            raise TypeError("The unit {0} does not exist.".format(value))
-
-
-
-
-test = Validator
-test.is_name_valid("m")
-
-
-
-
-#folaraz11@gmail.com
+# folaraz11@gmail.com

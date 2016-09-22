@@ -11,21 +11,20 @@ It will convert :
 
 
 import sys
+from pyconvert.errors import VersionError
 if sys.version_info <= (2, 7):
-    print("Pyconvert requires at least python 2.7 to run")
-    sys.exit(1)
+    raise VersionError("Pyconvert requires at least python 2.7 to run")
 
 import importlib
 from pyconvert.errors import VersionError
 
 minimum_supported_version = "2.7"
-required_libraries = ["pyconvert", "tabulate", "openpyxl", "pillow"]
+required_libraries = ["pyconvert", "tabulate", "openpyxl", "PIL"]
 
 
 for lib in required_libraries:
     try:
         importlib.import_module(lib)
     except ImportError as error:
-        print(error)
-
+        raise ImportError(error)
 

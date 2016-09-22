@@ -7,8 +7,8 @@ class UnitError(Exception):
 
 class NotValidError(Exception):
     def __init__(self, error_message):
-        self.error_mesage = error_message
-        print(self.error_mesage)
+        self.error_message = error_message
+        print(self.error_message)
 
 
 class NotValidTypeError(Exception):
@@ -16,7 +16,14 @@ class NotValidTypeError(Exception):
         self.error_mesage = error_message
         print(self.error_mesage)
 
+
 class VersionError(Exception):
+    def __init__(self, error_message):
+        self.error_mesage = error_message
+        print(self.error_mesage)
+
+
+class InvalidConversionError(Exception):
     def __init__(self, error_message):
         self.error_mesage = error_message
         print(self.error_mesage)

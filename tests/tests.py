@@ -12,7 +12,5 @@ class Tester(unittest.TestCase):
     def test(self):
         self.assertTrue(Validator.is_type_valid(9))
 
-
-
 if __name__ == "__main__":
     unittest.main()
