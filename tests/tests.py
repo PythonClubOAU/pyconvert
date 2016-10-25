@@ -1,7 +1,5 @@
 import unittest
-
-
-from pyconvert.base import Validator
+from pyconvert.checker import Check
 
 
 class Tester(unittest.TestCase):
@@ -10,7 +8,7 @@ class Tester(unittest.TestCase):
     """
 
     def test(self):
-        self.assertTrue(Validator.is_type_valid(9))
+        self.assertTrue(Check(name='hello').is_type_valid())
 
 if __name__ == "__main__":
     unittest.main()

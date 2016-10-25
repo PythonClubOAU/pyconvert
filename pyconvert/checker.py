@@ -1,81 +1,79 @@
-from pyconvert import base,getter
+from pyconvert import base
 import os
 
 
-def conversion_is_valid(self, convert_from, convert_to, parameter="symbol", type="measurement"):
-        """
-             :param self: name
-             :param convert_to: unit to convert from
-             :param parameter: parameter to be checked. Should be either name or symbol
-            :param convert_from: unit to convert from
-            :param type: measurement by default
-            :return: True if conversion is allowed and False if not
-            """
-        # @Todo: Get unit if name is not valid and validate conversion with the unit.
-        # if not name:
-        # unit = Getter.get_name_from_unit(convert_from)
-        if not self in base.conversion_dict[type]:
+class Check:
+    def __init__(self, name='', convert_from='', convert_to='', parameter="symbol", conversion_type="measurement",
+                 unit='',
+                 path=''):
+        self.name = name
+        self.parameter = parameter
+        self.convert_from = convert_from
+        self.convert_to = convert_to
+        self.conversion_type = conversion_type
+        self.unit = unit
+        self.path = path
+        if self.conversion_type not in base.conversion_dict.keys():
             raise IndexError("Invalid name is specified")
-        else:
-            if parameter not in ["name", "symbol"]:
-                raise IndexError("The provided parameter is invalid")
-            elif parameter == "name":
-                if convert_from and convert_to in base.conversion_dict[type][self]["available_converts"]:
-                    return True
-                else:
-                    return False
-            elif parameter == "symbol":
-                if convert_from and convert_to in base.conversion_dict[type][self]["available_units"]:
-                    return True
-                else:
-                    return False
 
-def unit_is_valid(self, unit, type="measurement"):
-        """
-            Check if a provided unit for a quantity is valid.
-            Return true if valid and false if not.
-            :param unit: quantity to check unit for
-            :param self: unit to check
-            :param type: measurement by default.
-            :return:
-            """
-        if not self in base.conversion_dict[type]:
-            raise IndexError("Invalid name is specified")
-        else:
-            if unit in base.conversion_dict[type]["available_units"] and unit != base.conversion_dict[type]["standard_unit"]:
-                print("The specified unit is available for the {0} but is not the standard unit.")
-            elif unit in base.conversion_dict[type]["available_units"] and unit == base.conversion_dict[type]["standard_unit"]:
+    def is_valid_conversion(self):
+        if self.parameter not in ["name", "symbol"]:
+            raise Check("The provided parameter is invalid.")
+        elif self.parameter == "name":
+            if self.convert_from and self.convert_to in base.conversion_dict[self.conversion_type][self][
+                    "available_converts"]:
+                return True
+            else:
+                return False
+        elif self.parameter == "symbol":
+            if self.convert_from and self.convert_to in base.conversion_dict[self.conversion_type][self][
+                    "available_units"]:
                 return True
             else:
                 return False
 
-def is_valid_path(path, type="file"):
-        """
-            Extension checking class.
-            Would check if the provided extension for a file name is valid or not.
-            Provide the file name in any two ways.
-            filename with extension or specify the extension separately.
-            For example:
-            a = Checker.FileChecker.extension_is_valid(filename="test.txt") or
-            a = Checker.FileChecker.extension_is_valid(filename_without_ext="test", extension= "txt")
-            :param filename:
-            :return: True if it is. False if not.
-            """
-        if not type:
-            raise TypeError("Invalid Type specified")
+    def is_valid_unit(self):
+        if self.unit in base.conversion_dict[self.conversion_type]["available_units"] and self.unit != \
+                base.conversion_dict[self.conversion_type][
+                    "standard_unit"]:
+            print("The specified unit is available for the {0} but is not the standard unit.")
+            return True
+        elif self.unit in base.conversion_dict[self.conversion_type]["available_units"] and self.unit == \
+                base.conversion_dict[self.conversion_type][
+                    "standard_unit"]:
+            return True
         else:
-            if not os.path.isfile(path):
-                is_valid = False
-                return is_valid
-            else:
-                return True
+            return False
 
-
-def is_valid_file(self, type="file"):
-        if not type:
-            raise TypeError("Invalid Type specified")
+    def is_valid_path(self):
+        if not self.conversion_type == "files":
+            raise Exception("Invalid Type specified")
+        file = self.path[(self.path.rfind('/') + 1):]
+        path = self.path[:self.path.find(file)]
+        if not os.path.isdir(path):
+            return False
         else:
-            if getter.get_file_type(self):
-                return True
-            else:
-                return False
+            return file
+
+    def is_valid_file(self):
+        file = self.is_valid_path()
+        if file:
+            return True
+        else:
+            raise Exception("The specified path is not valid.")
+
+    def is_type_valid(self):
+        if not isinstance(self.name, str):
+            raise TypeError("The name {0} is not of type str. All unit entered must be strings".format(self))
+        else:
+            return True
+
+    def is_name_valid(self):
+        if self.name in base.conversion_dict[self.conversion_type].keys():
+            return True
+        elif self.name not in base.conversion_dict[self].keys():
+            for key, values in base.conversion_dict[self].items():
+                if self.name in values["available_units"]:
+                    return False
+                else:
+                    return True

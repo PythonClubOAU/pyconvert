@@ -5,6 +5,7 @@ Contains all measurements and their likely conversions, all files and their like
 
 __all__ = []
 
+
 conversion_dict = dict(measurement=dict(
     length=dict(standard_unit="m", standard_symbol="m", available_converts=["metres",
                                                                             "centimeter", "millimeter",
@@ -47,6 +48,3 @@ conversion_dict = dict(measurement=dict(
                base_symbols=dict(text=["csv, xlsx, txt, docx, word, pdf, epub"], audio=["mp3", "wav"],
                                  image=["jpg", "png", "jpeg"]),
                not_suppported=["py", "java", "lua", "cpp", "json", "xml", "php", "js", "html", "css"]))
-
-
-# folaraz11@gmail.com
